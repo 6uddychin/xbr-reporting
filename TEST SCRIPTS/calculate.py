@@ -10,9 +10,15 @@ new_file = "test.xlsx"
 book = load_workbook(template_file)
 writer = pd.ExcelWriter(new_file, engine = 'openpyxl') 
 writer.book = book
+
+
+# SET THE STYLE
 ws = book.worksheets("Data")
 
-## ws is a openpypxl worksheet object
+col = ws.column_dimensions['A']
+col.number_format = u'#,##0.00€'
+
+# ws is a openpypxl worksheet object
 _cell = ws.cell()
 
 # Font properties
