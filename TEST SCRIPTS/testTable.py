@@ -21,7 +21,7 @@ print(mr)
 # transfer info from one sheet to another
 for i in range (1 , mr +1 ):
     for j in range (1, mc +1 ):
-        c = mainTable.cell(row = i, column = j)
-        newSheet.cell(row = i, column = j).value = c.value
+        c = mainTable.cell(row = i, column = j).value
+        newSheet.cell(row = i, column = j) = c.value
 
 newBook.save("testworkbook.xlsx")

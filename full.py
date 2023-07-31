@@ -13,7 +13,6 @@ reportName = str("WK" + reportWeek + "PartnerOps_WBR.xlsx")
 tempReport = str("wk" + reportWeek + "temp.xlsx")
 dfName = ("wk" + reportWeek + "_qbr.xlsx")
 
-qbrFile = "qbr_test.xlsx"
 
 
 df1 = pd.read_csv('qbr.csv')
@@ -162,5 +161,41 @@ for i in range (1, mr +1):
 
 # SAVES THE FINAL FILE WITH DATA TAB
 wb2.save(reportName)
+
+time.sleep(10)
+
+copyValues = pd.read_excel(reportName, sheet_name="Working")
+time.sleep(20)
+copyValues = copyValues.drop(copyValues.columns[0], axis = 1)
+
+output_file2 =  "qbr_format_test2.xlsx"
+copyValues.to_excel(output_file2, sheet_name='table')
+
+def copy_worksheet(source_ws, target_ws):
+    for row in source_ws.iter_rows():
+        for cell in row:
+            target_ws[cell.coordinate].font = cell.font.copy()
+            target_ws[cell.coordinate].border = cell.border.copy()
+            target_ws[cell.coordinate].fill = cell.fill.copy()
+            target_ws[cell.coordinate].number_format = cell.number_format
+            target_ws[cell.coordinate].alignment = cell.alignment.copy()
+
+def main():
+    source_file = qbrFile
+    source_sheet_name = "Working"
+    output_file = "qbr_Final.xlsx"
+
+    source_wb = xl.load_workbook(source_file)
+    source_ws = source_wb[source_sheet_name]
+
+    output_wb = xl.load_workbook(reportName)
+    output_ws = output_wb.active
+    output_ws.title = source_sheet_name
+
+    copy_worksheet(source_ws, output_ws)
+    output_wb.save(output_file)
+
+if __name__ == "__main__":
+    main()
 
 
